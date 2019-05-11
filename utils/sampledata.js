@@ -1,4 +1,4 @@
-let sampleDecks = {
+let decks = {
   React: {
     title: 'React',
     questions: [
@@ -20,11 +20,21 @@ let sampleDecks = {
         answer: 'The combination of a function and the lexical environment within which that function was declared.'
       }
     ]
+  },
+  CPP: {
+    title: 'C++',
+    questions: []
   }
 }
 
+export function getInitialData(){
+  return Promise.all([_getDecks()])
+  .then(([decks]) => ({decks}))
+}
+
+
 export function _getDecks(){
   return new Promise((res, rej) => {
-    setTimeout(() => res({...sampleDecks}), 1000)
+    setTimeout(() => res({...decks}), 1000)
   })
 }
