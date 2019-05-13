@@ -1,23 +1,29 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { connect } from 'react-redux'
-import { addDeckActionHandler } from '../redux/actions/shared'
+import { addCardToDeck } from '../../redux/actions/shared'
 
-class AddDeck extends React.Component {
+export default class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = {
+      question: '',
+      answer: ''
+    }
 
     this.changeHandler = this.changeHandler.bind(this)
+    this.actionHandler = this.actionHandler.bind(this)
   }
 
   static navigationOptions = {
-    title: 'Add Deck',
+    title: 'Add Question',
   };
 
-  actionHandler(){
+  actionHandler(deck, question, answer){
+    deck.questions = deck.questions.concat({question, answer})
+    console.log('ADDQUESTION: ', deck)
+    addCardToDeck(deck)
     this.props.pageHandler('home')
-
   }
 
   changeHandler(txt){
@@ -31,9 +37,11 @@ class AddDeck extends React.Component {
   }
 
   render() {
+    let { deck } = this.props
+    let { question, answer } = this.state
+
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <View style={{ width: 300, height: 60 }}>
               <View style={{ flex: 1 }}>
@@ -42,19 +50,28 @@ class AddDeck extends React.Component {
             </View>
           </View>
 
-          <Text style={{ fontSize: 30 }}>What is the title of your new deck?</Text>
+          <Text style={{ fontSize: 30 }}>Add a new question!</Text>
+          <Text style={{ fontSize: 22 }}>Question:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            placeholder='Enter Deck Title'
-            value={this.state.text}
+            onChangeText={(question) => this.setState({question})}
+            placeholder='Enter Question'
+            value={this.state.question}
           />
+
+          <Text style={{ fontSize: 22 }}>Answer:</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(answer) => this.setState({answer})}
+            placeholder='Enter Answer'
+            value={this.state.answer}
+          />
+
           <Button
-            title='+ Add Deck'
-            onPress={() => this.props.addDeckActionHandler({ key: this.textCleaner(this.state.text), title: this.state.text })}
+            title='+ Add to Deck'
+            onPress={() => this.actionHandler(deck, question, answer)}
             color='#7caee3'
           ></Button>
-        </ScrollView>
       </View>
     )
   }
@@ -151,12 +168,3 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
-
-function mapStateToProps(){
-  return {
-    title: 'butts',
-    key: 'keyButt'
-  }
-}
-
-export default connect(mapStateToProps, {addDeckActionHandler})(AddDeck)

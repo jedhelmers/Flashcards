@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native'
+import { answerQuestionHandler } from '../../redux/actions/shared'
 
 export default class Question extends React.Component {
   static navigationOptions = {
@@ -9,6 +10,13 @@ export default class Question extends React.Component {
 
   static navigationOptions = {
     header: null,
+  }
+
+  actionHandler(deck, index, correct){
+    // deck.questions[index] = deck.questions[index].push({ correct: correct })
+    console.log('QUESTION: ', Object.assign(deck.questions[index], { correct: correct }))
+    answerQuestionHandler(deck)
+    this.props.pageHandler('home', deck)
   }
 
   async componentDidMount(){
@@ -38,12 +46,17 @@ export default class Question extends React.Component {
 
           <View style={styles.getStartedContainer}>
             {deck.questions.map((d, i) => (
-              <TouchableOpacity key={i} style={styles.card} onPress={() => this.props.pageHandler('question', deck)}>
+              <TouchableOpacity key={i} style={[styles.card]} onPress={() => this.actionHandler(deck, i, true)}>
+                {typeof d.correct !== 'undefined' && (
+                  <View style={d.correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{d.correct ? 'Correct!' : 'Wrong!'}</Text></View>
+                )}
                 <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 24 }}>{d.question}</Text>
               </TouchableOpacity>
             ))}
 
           </View>
+
+
 
         </ScrollView>
       </View>
@@ -63,13 +76,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     borderRadius: 4,
-    borderColor: '#24292e',
+    borderColor: '#7caee3',
     borderStyle: 'solid',
     borderWidth: 1,
     marginBottom: 10,
     width: 300,
     height: 150,
     flex: 1,
+    justifyContent: 'center'
+  },
+  right: {
+    backgroundColor: '#63b72b',
+    position: 'absolute',
+    top: 0,
+    height: 36,
+    width: '100%',
+    justifyContent: 'center'
+  },
+  wrong: {
+    backgroundColor: '#cc0000',
+    position: 'absolute',
+    top: 0,
+    height: 36,
+    width: '100%',
     justifyContent: 'center'
   },
   developmentModeText: {

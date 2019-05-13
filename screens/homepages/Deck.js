@@ -1,40 +1,29 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
-import { connect } from 'react-redux'
-import { MonoText } from '../../components/StyledText';
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Button } from 'react-native';
 import LottieView from 'lottie-react-native'
 
-class Home extends React.Component {
+export default class Deck extends React.Component {
+  static navigationOptions = {
+    title: 'Links',
+  }
+
   static navigationOptions = {
     header: null,
-    isLoadingComplete: false,
-  };
+  }
 
   async componentDidMount(){
     this.animation.play()
     this.animation.play(30, 120)
-
-
   }
 
   render() {
-    let { decks } = this.props
-
+    let { deck } = this.props
 
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
           <View style={styles.welcomeContainer}>
-            <View style={{ width: '100%', height: 100 }}>
+            <View style={{ width: 300, height: 60 }}>
               <View style={{ flex: 1 }}>
                 <LottieView
                   ref={animation => {
@@ -46,19 +35,35 @@ class Home extends React.Component {
             </View>
           </View>
 
-          <View style={styles.getStartedContainer}>
-            {Object.values(decks).map((deck, index) => (
-              <TouchableOpacity key={index} style={styles.card} onPress={() => this.props.pageHandler('deck', deck)}>
-                <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 24 }}>
-                  {deck.title}
-                </Text>
-                <Text style={{ color: '#24292e', textAlign: 'center' }}>{deck.questions.length > 1 || deck.questions.length === 0 ? `${deck.questions.length} Questions` : `${deck.questions.length} Question`}</Text>
+          <View style={{ justifyContent: 'center', flex: 1 }}>
+            <View style={styles.getStartedContainer, { marginBottom: 30 }}>
+              <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 38 }}>
+                {deck.title}
+              </Text>
+              <Text style={{ color: '#24292e', textAlign: 'center' }}>
+                {deck.questions.length > 1 || deck.questions.length === 0 ? `${deck.questions.length} Questions` : `${deck.questions.length} Question`}
+              </Text>
+            </View>
+
+            <View>
+            <View style={styles.button}>
+              <Button
+                title='Add Card'
+                color= '#24292e'
+                onPress={() => this.props.pageHandler('addQuestion', deck)}
+              ></Button>
+            </View>
+
+              <TouchableOpacity style={styles.buttonBlack}>
+                <Button
+                  title='Start Quiz'
+                  color= 'white'
+                  onPress={() => this.props.pageHandler('question', deck)}
+                ></Button>
               </TouchableOpacity>
-            ))}
+            </View>
 
           </View>
-
-        </ScrollView>
       </View>
     );
   }
@@ -68,13 +73,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 20
+  },
+  button: {
+    borderRadius: 4,
+    borderColor: '#24292e',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    marginBottom: 10
+  },
+  buttonBlack: {
+    borderRadius: 4,
+    backgroundColor: '#24292e',
+    color: 'white',
+    borderColor: '#24292e',
+    borderStyle: 'solid',
+    borderWidth: 1,
   },
   card: {
     backgroundColor: '#fff',
+    shadowColor: 'black',
+    shadowOffset: { height: 3, width: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
     borderRadius: 4,
     borderColor: '#7caee3',
     borderStyle: 'solid',
-    borderBottomWidth: 1,
+    borderWidth: 1,
     marginBottom: 10,
     width: 300,
     height: 150,
@@ -124,26 +149,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
   },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
   tabBarInfoText: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
@@ -164,6 +169,3 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
-
-
-export default Home

@@ -1,62 +1,70 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import { connect } from 'react-redux'
-import { addDeckActionHandler } from '../redux/actions/shared'
+import { ScrollView, StyleSheet, TouchableOpacity, Button, Text, View } from 'react-native';
+import LottieView from 'lottie-react-native'
 
-class AddDeck extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: '' };
-
-    this.changeHandler = this.changeHandler.bind(this)
+export default class Questions extends React.Component {
+  static navigationOptions = {
+    title: 'Links',
   }
 
   static navigationOptions = {
-    title: 'Add Deck',
-  };
-
-  actionHandler(){
-    this.props.pageHandler('home')
-
+    header: null,
   }
 
-  changeHandler(txt){
-    this.setState({
-      text: txt
-    })
-  }
-
-  textCleaner(txt){
-    return txt.replace(/[^\w\s]/gi, '')
+  async componentDidMount(){
+    this.animation.play()
+    this.animation.play(30, 120)
   }
 
   render() {
+    let { deck } = this.props
+    console.log('QUESTIONS: ', deck)
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <View style={{ width: 300, height: 60 }}>
               <View style={{ flex: 1 }}>
-
+                <LottieView
+                  ref={animation => {
+                    this.animation = animation
+                  }}
+                  source={require('../../assets/lottie/topBounceAlt.json')}
+                />
               </View>
             </View>
           </View>
 
-          <Text style={{ fontSize: 30 }}>What is the title of your new deck?</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            placeholder='Enter Deck Title'
-            value={this.state.text}
-          />
-          <Button
-            title='+ Add Deck'
-            onPress={() => this.props.addDeckActionHandler({ key: this.textCleaner(this.state.text), title: this.state.text })}
-            color='#7caee3'
-          ></Button>
+          <View style={styles.getStartedContainer}>
+            {deck.questions.map((d, i) => (
+              <TouchableOpacity key={i} style={styles.card} onPress={() => this.props.pageHandler('question', deck)}>
+                <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 24 }}>{d.question}</Text>
+              </TouchableOpacity>
+            ))}
+
+          </View>
+
+          <View style={styles.button}>
+            <Button
+              title='Add Card'
+              color= '#24292e'
+              onPress={() => this.props.pageHandler('question', deck)}
+            ></Button>
+          </View>
+
+            <TouchableOpacity style={styles.buttonBlack}>
+              <Button
+                title='Start Quiz'
+                color= 'white'
+                onPress={() => this.props.pageHandler('question', deck)}
+              ></Button>
+            </TouchableOpacity>
+          </View>
+
         </ScrollView>
       </View>
-    )
+    );
   }
 }
 
@@ -64,13 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderColor: 'pink',
-    borderStyle: 'solid',
-    height: 40,
   },
   card: {
     backgroundColor: '#fff',
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     borderRadius: 4,
-    borderColor: '#24292e',
+    borderColor: '#7caee3',
     borderStyle: 'solid',
     borderWidth: 1,
     marginBottom: 10,
@@ -151,12 +152,3 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
-
-function mapStateToProps(){
-  return {
-    title: 'butts',
-    key: 'keyButt'
-  }
-}
-
-export default connect(mapStateToProps, {addDeckActionHandler})(AddDeck)

@@ -8,7 +8,7 @@ import AddDeck from '../screens/AddDeck';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const Decks = createStackNavigator({
-  Home: HomeScreen,
+  Home: { screen: HomeScreen, test: 'test', param: 'test' },
 });
 
 Decks.navigationOptions = {
