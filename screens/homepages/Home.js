@@ -33,14 +33,14 @@ class Home extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <View style={{ width: '100%', height: 100 }}>
+          <View style={[styles.welcomeContainer, styles.borderBottom]}>
+            <View style={{ width: '100%', height: 100, marginTop: 20 }}>
               <View style={{ flex: 1 }}>
                 <LottieView
                   ref={animation => {
                     this.animation = animation
                   }}
-                  source={require('../../assets/lottie/topBounceAlt.json')}
+                  source={require('../../assets/lottie/topBounceAlt2.json')}
                 />
               </View>
             </View>
@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  borderBottom: {
+    backgroundColor: '#fff',
+    borderColor: '#24292e',
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
   },
   card: {
     backgroundColor: '#fff',

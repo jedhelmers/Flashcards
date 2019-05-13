@@ -9,6 +9,38 @@ let decks = {
       {
         question: 'Where do you make Ajax requests in React?',
         answer: 'The componentDidMount lifecycle event'
+      },
+      {
+        question: 'What are the features of React? I',
+        answer: 'It uses the virtual DOM instead of the real DOM'
+      },
+      {
+        question: 'What are the features of React? II',
+        answer: 'It uses server-side rendering'
+      },
+      {
+        question: 'What are the features of React? III',
+        answer: 'It follows uni-directional data flow or data binding'
+      },
+      {
+        question: 'What are some major advantages of React? I',
+        answer: 'It increases the application’s performance'
+      },
+      {
+        question: 'What are some major advantages of React? II',
+        answer: 'It can be conveniently used on the client as well as server side'
+      },
+      {
+        question: 'What are some major advantages of React? III',
+        answer: 'Because of JSX, code’s readability increases'
+      },
+      {
+        question: 'What are some major advantages of React? IV',
+        answer: 'React is easy to integrate with other frameworks like Meteor, Angular, etc'
+      },
+      {
+        question: 'What are some major advantages of React? V',
+        answer: 'Using React, writing UI test cases become extremely easy'
       }
     ]
   },
@@ -27,6 +59,21 @@ let decks = {
   }
 }
 
+let score = {
+  React: {
+    correct: 0,
+    incorrect: 0
+  },
+  JavaScript: {
+    correct: 0,
+    incorrect: 0
+  },
+  CPP: {
+    correct: 0,
+    incorrect: 0
+  },
+}
+
 function formatDeck({ key, title, questions = [] }){
   return {
     [key]: {
@@ -34,6 +81,17 @@ function formatDeck({ key, title, questions = [] }){
       questions: questions
     }
   }
+}
+
+export function getScore(key, answer){
+  return new Promise((res, rej) => {
+    if(answer){
+      decks[key].correct++
+    } else {
+      decks[key].incorrect++
+    }
+    setTimeout(() => res(decks[key]), 1000)
+  })
 }
 
 export function getInitialData(){

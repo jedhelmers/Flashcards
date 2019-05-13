@@ -1,5 +1,5 @@
-import { getInitialData, getAddedDeck, answerQuestion, addDeck, addCard } from '../../utils/sampledata'
-import { getDecks, addDeckAction, addCardToDeckAction, answerQuestionAction } from './decks'
+import { getInitialData, getAddedDeck, answerQuestion, addDeck, addCard, getScore } from '../../utils/sampledata'
+import { getDecks, addDeckAction, addCardToDeckAction, answerQuestionAction, getScoreAction } from './decks'
 
 export function handleInitialData(){
   return dispatch => {
@@ -33,6 +33,15 @@ export function answerQuestionHandler(deck){
     return answerQuestion(deck)
       .then(deck => {
         dispatch(answerQuestionAction(deck))
+      })
+  }
+}
+
+export function getScoreHandler(key, answer){
+  return dispatch => {
+    return getScore(key, answer)
+      .then(deck => {
+        dispatch(getScoreAction(deck))
       })
   }
 }

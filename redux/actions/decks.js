@@ -4,6 +4,7 @@ export const GET_DECKS = 'GET_DECKS'
 export const ADD_DECK = 'ADD_DECK'
 export const ADD_CARD = 'ADD_CARD'
 export const ANSWER_QUESTION = 'ANSWER_QUESTION'
+export const ADD_SCORE = 'ANSWER_QUESTION'
 
 export function getDecks(decks){
   return {
@@ -30,6 +31,14 @@ export function addCardToDeckAction(deck, { question, answer }){
 export function answerQuestionAction(deck){
   return {
     type: ANSWER_QUESTION,
+    deck
+  }
+}
+
+export function getScoreAction(deck){
+
+  return {
+    type: ADD_SCORE,
     deck
   }
 }

@@ -19,23 +19,25 @@ export default class Deck extends React.Component {
   render() {
     let { deck } = this.props
 
+    // let correctCnt = deck.questions.reduce((a, c) => a + c.correct, 0)
+
     return (
       <View style={styles.container}>
 
           <View style={styles.welcomeContainer}>
-            <View style={{ width: 300, height: 60 }}>
+            <View style={{ width: 300, height: 60, marginTop: 20 }}>
               <View style={{ flex: 1 }}>
                 <LottieView
                   ref={animation => {
                     this.animation = animation
                   }}
-                  source={require('../../assets/lottie/topBounceAlt.json')}
+                  source={require('../../assets/lottie/topBounceAlt2.json')}
                 />
               </View>
             </View>
           </View>
 
-          <View style={{ justifyContent: 'center', flex: 1 }}>
+          <View style={{ justifyContent: 'center', flex: 1, padding: 40 }}>
             <View style={styles.getStartedContainer, { marginBottom: 30 }}>
               <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 38 }}>
                 {deck.title}
@@ -43,6 +45,11 @@ export default class Deck extends React.Component {
               <Text style={{ color: '#24292e', textAlign: 'center' }}>
                 {deck.questions.length > 1 || deck.questions.length === 0 ? `${deck.questions.length} Questions` : `${deck.questions.length} Question`}
               </Text>
+              {/* right/wrong/unanswered */}
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Text style={{ color: '#24292e', textAlign: 'center' }}>
+                </Text>
+              </View>
             </View>
 
             <View>
@@ -73,10 +80,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20
   },
   button: {
     borderRadius: 4,
+    height: 45,
     borderColor: '#24292e',
     borderStyle: 'solid',
     borderWidth: 1,
@@ -84,6 +91,7 @@ const styles = StyleSheet.create({
   },
   buttonBlack: {
     borderRadius: 4,
+    height: 45,
     backgroundColor: '#24292e',
     color: 'white',
     borderColor: '#24292e',

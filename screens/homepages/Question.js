@@ -1,9 +1,29 @@
 import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Button } from 'react-native';
 import LottieView from 'lottie-react-native'
 import { answerQuestionHandler } from '../../redux/actions/shared'
+import { getScoreHandler } from '../../redux/actions/shared'
+import { Icon } from 'react-native-elements'
 
 export default class Question extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      cardFlipped: []
+    }
+
+    this.flipHandler = this.flipHandler.bind(this)
+  }
+
+  flipHandler(index){
+    let newArry = this.state.cardFlipped
+    newArry[index] = !newArry[index]
+
+    this.setState({
+      cardFlipped: newArry
+    })
+  }
+
   static navigationOptions = {
     title: 'Links',
   }
@@ -16,24 +36,42 @@ export default class Question extends React.Component {
     // deck.questions[index] = deck.questions[index].push({ correct: correct })
     console.log('QUESTION: ', Object.assign(deck.questions[index], { correct: correct }))
     answerQuestionHandler(deck)
-    this.props.pageHandler('home', deck)
+    getScoreHandler('React', true)
+    // this.props.pageHandler('home', deck)
   }
 
   async componentDidMount(){
     this.animation.play()
     this.animation.play(30, 120)
+
+    let cardCnt = this.props.deck.questions.map(q => false)
+
+    this.setState({
+      cardFlipped: cardCnt
+    })
   }
 
   render() {
     let { deck } = this.props
-    console.log('QUESTION: ', deck)
+    let { cardFlipped } = this.state
+    console.log('QUESTION: ', cardFlipped)
 
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
-            <View style={{ width: 300, height: 60 }}>
-              <View style={{ flex: 1 }}>
+
+            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+              <Icon
+                name='arrow-back'
+                type='material'
+                color='#24292e'
+                size={24}
+              />
+            </TouchableOpacity>
+
+            <View style={{ flex: 1, height: 60 }}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
                 <LottieView
                   ref={animation => {
                     this.animation = animation
@@ -42,16 +80,50 @@ export default class Question extends React.Component {
                 />
               </View>
             </View>
+
+            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+              <Icon
+                name='arrow-forward'
+                type='material'
+                color='#24292e'
+                size={24}
+              />
+            </TouchableOpacity>
+
           </View>
 
           <View style={styles.getStartedContainer}>
             {deck.questions.map((d, i) => (
-              <TouchableOpacity key={i} style={[styles.card]} onPress={() => this.actionHandler(deck, i, true)}>
-                {typeof d.correct !== 'undefined' && (
-                  <View style={d.correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{d.correct ? 'Correct!' : 'Wrong!'}</Text></View>
-                )}
-                <Text style={{ color: '#24292e', textAlign: 'center', fontSize: 24 }}>{d.question}</Text>
-              </TouchableOpacity>
+              !cardFlipped[i] ? (
+                <TouchableOpacity key={i} style={[styles.card, typeof d.correct !== 'undefined' && ( d.correct ? styles.rightBorder : styles.wrongBorder ), styles.cardBlack]} onPress={() => this.flipHandler(i)}>
+                  <Text style={{ color: '#fff', textAlign: 'center', fontSize: 24 }}>{d.question}</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity key={i} style={[styles.card]} onPress={() => this.flipHandler(i)}>
+                  <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                  {typeof d.correct !== 'undefined' && (
+                    <View style={d.correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{d.correct ? 'Correct!' : 'Wrong!'}</Text></View>
+                  )}
+                  <View style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', paddingLeft: 10, flex: 1 }}>
+                    <Text style={{ color: '#24292e', fontSize: 24 }}>{d.answer}</Text>
+                  </View>
+                  {typeof d.correct === 'undefined' && (
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                      <Button
+                        title='Right?'
+                        onPress={() => this.actionHandler(deck, i, true)}
+                        color='#63b72b'
+                      ></Button>
+                      <Button
+                        title='Wrong?'
+                        onPress={() => this.actionHandler(deck, i, false)}
+                        color='#cc0000'
+                      ></Button>
+                    </View>
+                  )}
+                  </View>
+                </TouchableOpacity>
+              )
             ))}
 
           </View>
@@ -60,7 +132,7 @@ export default class Question extends React.Component {
 
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
@@ -85,21 +157,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
+  cardBlack: {
+    backgroundColor: '#24292e'
+  },
   right: {
     backgroundColor: '#63b72b',
-    position: 'absolute',
-    top: 0,
     height: 36,
+    justifyContent: 'space-between',
     width: '100%',
     justifyContent: 'center'
   },
   wrong: {
     backgroundColor: '#cc0000',
-    position: 'absolute',
-    top: 0,
     height: 36,
+    justifyContent: 'space-between',
     width: '100%',
     justifyContent: 'center'
+  },
+  rightBorder: {
+    borderColor: '#63b72b',
+    borderWidth: 2
+  },
+  wrongBorder: {
+    borderColor: '#cc0000',
+    borderWidth: 2
   },
   developmentModeText: {
     marginBottom: 20,
@@ -113,6 +194,7 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 10,
     marginBottom: 20,
   },
