@@ -65,7 +65,7 @@ export default class Deck extends React.Component {
               <TouchableOpacity style={styles.buttonBlack}>
                 <Button
                   title='Start Quiz'
-                  color= 'white'
+                  color= '#ffffff'
                   onPress={() => this.props.pageHandler('question', deck)}
                 ></Button>
               </TouchableOpacity>

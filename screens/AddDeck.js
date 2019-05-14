@@ -1,7 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { ScrollView, Link, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { connect } from 'react-redux'
 import { addDeckActionHandler } from '../redux/actions/shared'
+import { createSwitchNavigator } from "react-navigation"
+import { createBrowserApp } from "react-navigation"
 
 class AddDeck extends React.Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class AddDeck extends React.Component {
     this.state = { text: '' };
 
     this.changeHandler = this.changeHandler.bind(this)
+    this.actionHandler = this.actionHandler.bind(this)
   }
 
   static navigationOptions = {
@@ -16,8 +19,10 @@ class AddDeck extends React.Component {
   };
 
   actionHandler(){
-    this.props.pageHandler('home')
-
+    this.props.addDeckActionHandler({ key: this.textCleaner(this.state.text), title: this.state.text})
+    // this.props.pageHandler('home')
+    this.props.navigation.navigate('Decks')
+    console.log('ADDDECK: ')
   }
 
   changeHandler(txt){
@@ -42,6 +47,8 @@ class AddDeck extends React.Component {
             </View>
           </View>
 
+
+
           <Text style={{ fontSize: 30 }}>What is the title of your new deck?</Text>
           <TextInput
             style={styles.input}
@@ -51,7 +58,7 @@ class AddDeck extends React.Component {
           />
           <Button
             title='+ Add Deck'
-            onPress={() => this.props.addDeckActionHandler({ key: this.textCleaner(this.state.text), title: this.state.text })}
+            onPress={() => this.actionHandler()}
             color='#7caee3'
           ></Button>
         </ScrollView>

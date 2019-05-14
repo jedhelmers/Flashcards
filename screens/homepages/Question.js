@@ -9,10 +9,12 @@ export default class Question extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      cardFlipped: []
+      cardFlipped: [],
+      index: 0
     }
 
     this.flipHandler = this.flipHandler.bind(this)
+    this.indexHandler = this.indexHandler.bind(this)
   }
 
   flipHandler(index){
@@ -32,11 +34,19 @@ export default class Question extends React.Component {
     header: null,
   }
 
+  indexHandler(){
+      this.setState({
+        index: this.state.index + 1
+      })
+  }
+
   actionHandler(deck, index, correct){
     // deck.questions[index] = deck.questions[index].push({ correct: correct })
-    // console.log('QUESTION: ', Object.assign(deck.questions[index], { correct: correct }))
-    answerQuestionHandler(deck)
-    getScoreHandler('React', true)
+    // console.log('QUESTION: ', )
+    answerQuestionHandler(Object.assign(deck.questions[index], { correct: correct }))
+    // getScoreHandler('React', true)
+    this.flipHandler(index)
+    this.flipHandler(index)
     // this.props.pageHandler('home', deck)
   }
 
@@ -53,7 +63,7 @@ export default class Question extends React.Component {
 
   render() {
     let { deck } = this.props
-    let { cardFlipped } = this.state
+    let { cardFlipped, index } = this.state
     // console.log('QUESTION: ', cardFlipped)
 
     return (
@@ -76,7 +86,7 @@ export default class Question extends React.Component {
                   ref={animation => {
                     this.animation = animation
                   }}
-                  source={require('../../assets/lottie/topBounceAlt.json')}
+                  source={require('../../assets/lottie/topBounceAlt2.json')}
                 />
               </View>
             </View>
@@ -93,38 +103,62 @@ export default class Question extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            {deck.questions.map((d, i) => (
-              !cardFlipped[i] ? (
-                <TouchableOpacity key={i} style={[styles.card, typeof d.correct !== 'undefined' && ( d.correct ? styles.rightBorder : styles.wrongBorder ), styles.cardBlack]} onPress={() => this.flipHandler(i)}>
-                  <Text style={{ color: '#fff', textAlign: 'center', fontSize: 24 }}>{d.question}</Text>
-                </TouchableOpacity>
+            {
+              typeof cardFlipped[index] !== 'undefined' ? (
+                !cardFlipped[index] ? (
+                  <TouchableOpacity key={index} style={[styles.card, typeof deck.questions[index].correct !== 'undefined' && ( deck.questions[index].correct ? styles.rightBorder : styles.wrongBorder ), styles.cardBlack]} onPress={() => this.flipHandler(index)}>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontSize: 24 }}>{deck.questions[index].question}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <React.Fragment>
+                    <TouchableOpacity key={index} style={[styles.card]} onPress={() => this.flipHandler(index)}>
+                      <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                      {typeof deck.questions[index].correct !== 'undefined' && (
+                        <View style={deck.questions[index].correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{deck.questions[index].correct ? 'Correct!' : 'Wrong!'}</Text></View>
+                      )}
+                      <View style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', paddingLeft: 10, flex: 1 }}>
+                        <Text style={{ color: '#24292e', fontSize: 24 }}>{deck.questions[index].answer}</Text>
+                      </View>
+                      {typeof deck.questions[index].correct === 'undefined' && (
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                          <Button
+                            title='Right?'
+                            onPress={() => this.actionHandler(deck, index, true)}
+                            color='#63b72b'
+                          ></Button>
+                          <Button
+                            title='Wrong?'
+                            onPress={() => this.actionHandler(deck, index, false)}
+                            color='#cc0000'
+                          ></Button>
+                        </View>
+                      )}
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.indexHandler()}>
+                      <Text>{index === deck.questions.length - 1 ? 'Results' : 'Next'}</Text>
+                    </TouchableOpacity>
+                  </React.Fragment>
+                )
               ) : (
-                <TouchableOpacity key={i} style={[styles.card]} onPress={() => this.flipHandler(i)}>
-                  <View style={{ justifyContent: 'space-between', flex: 1 }}>
-                  {typeof d.correct !== 'undefined' && (
-                    <View style={d.correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{d.correct ? 'Correct!' : 'Wrong!'}</Text></View>
-                  )}
-                  <View style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', paddingLeft: 10, flex: 1 }}>
-                    <Text style={{ color: '#24292e', fontSize: 24 }}>{d.answer}</Text>
-                  </View>
-                  {typeof d.correct === 'undefined' && (
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                      <Button
-                        title='Right?'
-                        onPress={() => this.actionHandler(deck, i, true)}
-                        color='#63b72b'
-                      ></Button>
-                      <Button
-                        title='Wrong?'
-                        onPress={() => this.actionHandler(deck, i, false)}
-                        color='#cc0000'
-                      ></Button>
-                    </View>
-                  )}
-                  </View>
-                </TouchableOpacity>
+                <React.Fragment>
+                  <Text style={{ fontSize: 30, marginBottom: 20 }}>Results</Text>
+                  {deck.questions.map((d, i) => (
+                      <TouchableOpacity key={i} style={[styles.card]} onPress={() => this.flipHandler(i)}>
+                        <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                        {typeof d.correct !== 'undefined' && (
+                          <View style={d.correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{d.correct ? 'Correct!' : 'Wrong!'}</Text></View>
+                        )}
+                        <View style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', paddingLeft: 10, flex: 1 }}>
+                          <Text style={{ color: '#24292e', fontSize: 24 }}>{d.answer}</Text>
+                        </View>
+
+                        </View>
+                      </TouchableOpacity>
+                  ))}
+                </React.Fragment>
               )
-            ))}
+          }
 
           </View>
 
