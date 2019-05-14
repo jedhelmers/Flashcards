@@ -52,7 +52,7 @@ class HomeScreen extends React.Component {
       // this.setState({
       //   page: 'home'
       // })
-      console.log("HOMESCREEN 4: ", this.props.navigation.actions.setParams({ page: 'home' }))
+      // console.log("HOMESCREEN 4: ", this.props.navigation.actions.setParams({ page: 'home' }))
     }
 
   }

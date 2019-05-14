@@ -56,6 +56,5 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   Decks,
-  CreateDeck,
-  SettingsStack,
+  CreateDeck
 });

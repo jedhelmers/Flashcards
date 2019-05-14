@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Button } from 'react-native';
 import LottieView from 'lottie-react-native'
+import { Icon } from 'react-native-elements'
 
 export default class Deck extends React.Component {
   static navigationOptions = {
@@ -68,6 +69,17 @@ export default class Deck extends React.Component {
                   onPress={() => this.props.pageHandler('question', deck)}
                 ></Button>
               </TouchableOpacity>
+
+              <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+                <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+                  <Icon
+                    name='home'
+                    type='material'
+                    color='#24292e'
+                    size={24}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
           </View>

@@ -34,7 +34,7 @@ export default class Question extends React.Component {
 
   actionHandler(deck, index, correct){
     // deck.questions[index] = deck.questions[index].push({ correct: correct })
-    console.log('QUESTION: ', Object.assign(deck.questions[index], { correct: correct }))
+    // console.log('QUESTION: ', Object.assign(deck.questions[index], { correct: correct }))
     answerQuestionHandler(deck)
     getScoreHandler('React', true)
     // this.props.pageHandler('home', deck)
@@ -54,14 +54,14 @@ export default class Question extends React.Component {
   render() {
     let { deck } = this.props
     let { cardFlipped } = this.state
-    console.log('QUESTION: ', cardFlipped)
+    // console.log('QUESTION: ', cardFlipped)
 
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
 
-            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('deck', deck)}>
               <Icon
                 name='arrow-back'
                 type='material'
@@ -83,7 +83,7 @@ export default class Question extends React.Component {
 
             <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
               <Icon
-                name='arrow-forward'
+                name='home'
                 type='material'
                 color='#24292e'
                 size={24}

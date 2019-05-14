@@ -18,7 +18,7 @@ export default class Questions extends React.Component {
 
   render() {
     let { deck } = this.props
-    console.log('QUESTIONS: ', deck)
+    // console.log('QUESTIONS: ', deck)
 
     return (
       <View style={styles.container}>

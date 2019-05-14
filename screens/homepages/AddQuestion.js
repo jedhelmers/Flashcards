@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import LottieView from 'lottie-react-native'
 import { connect } from 'react-redux'
 import { addCardToDeck } from '../../redux/actions/shared'
+import { Icon } from 'react-native-elements'
 
 export default class AddQuestion extends React.Component {
   constructor(props) {
@@ -19,9 +21,14 @@ export default class AddQuestion extends React.Component {
     title: 'Add Question',
   };
 
+  async componentDidMount(){
+    this.animation.play()
+    this.animation.play(30, 120)
+  }
+
   actionHandler(deck, question, answer){
     deck.questions = deck.questions.concat({question, answer})
-    console.log('ADDQUESTION: ', deck)
+    // console.log('ADDQUESTION: ', deck)
     addCardToDeck(deck)
     this.props.pageHandler('home')
   }
@@ -42,16 +49,40 @@ export default class AddQuestion extends React.Component {
 
     return (
       <View style={styles.container}>
-          <View style={styles.welcomeContainer}>
-            <View style={{ width: 300, height: 60 }}>
-              <View style={{ flex: 1 }}>
+        <View style={styles.welcomeContainer}>
 
-              </View>
+          <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('deck', deck)}>
+            <Icon
+              name='arrow-back'
+              type='material'
+              color='#24292e'
+              size={24}
+            />
+          </TouchableOpacity>
+
+          <View style={{ flex: 1, height: 60 }}>
+            <View style={{ flex: 1 }}>
+              <LottieView
+                ref={animation => {
+                  this.animation = animation
+                }}
+                source={require('../../assets/lottie/topBounceAlt2.json')}
+              />
             </View>
           </View>
 
-          <Text style={{ fontSize: 30 }}>Add a new question!</Text>
-          <Text style={{ fontSize: 22 }}>Question:</Text>
+          <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+            <Icon
+              name='home'
+              type='material'
+              color='#24292e'
+              size={24}
+            />
+          </TouchableOpacity>
+
+        </View>
+
+          <Text style={{ fontSize: 30, marginBottom: 20 }}>Add a new question!</Text>
           <TextInput
             style={styles.input}
             onChangeText={(question) => this.setState({question})}
@@ -59,7 +90,6 @@ export default class AddQuestion extends React.Component {
             value={this.state.question}
           />
 
-          <Text style={{ fontSize: 22 }}>Answer:</Text>
           <TextInput
             style={styles.input}
             onChangeText={(answer) => this.setState({answer})}
@@ -88,6 +118,7 @@ const styles = StyleSheet.create({
     borderColor: 'pink',
     borderStyle: 'solid',
     height: 40,
+    marginBottom: 20
   },
   card: {
     backgroundColor: '#fff',
@@ -117,8 +148,9 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 50,
   },
   welcomeImage: {
     width: 100,
