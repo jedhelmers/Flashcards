@@ -54,20 +54,12 @@ export default class Deck extends React.Component {
             </View>
 
             <View>
-            <View style={styles.button}>
-              <Button
-                title='Add Card'
-                color= '#24292e'
-                onPress={() => this.props.pageHandler('addQuestion', deck)}
-              ></Button>
-            </View>
+            <TouchableOpacity style={styles.button} onPress={() => this.props.pageHandler('addQuestion', deck)}>
+              <Text style={{ color: '#24292e', fontSize: 24, textAlign: 'center' }}>Add Card</Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonBlack}>
-                <Button
-                  title='Start Quiz'
-                  color= '#ffffff'
-                  onPress={() => this.props.pageHandler('question', deck)}
-                ></Button>
+              <TouchableOpacity style={styles.buttonBlack} onPress={() => this.props.pageHandler('question', deck)}>
+                <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>Start Quiz</Text>
               </TouchableOpacity>
 
               <View style={{ justifyContent: 'center', flexDirection: 'row' }}>

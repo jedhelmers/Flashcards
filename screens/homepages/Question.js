@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     width: 300,
-    height: 150,
+    minHeight: 150,
     flex: 1,
     justifyContent: 'center'
   },
@@ -210,11 +210,11 @@ const styles = StyleSheet.create({
   },
   rightBorder: {
     borderColor: '#63b72b',
-    borderWidth: 2
+    borderWidth: 4
   },
   wrongBorder: {
     borderColor: '#cc0000',
-    borderWidth: 2
+    borderWidth: 4
   },
   developmentModeText: {
     marginBottom: 20,
