@@ -107,7 +107,15 @@ export default class Question extends React.Component {
               typeof cardFlipped[index] !== 'undefined' ? (
                 !cardFlipped[index] ? (
                   <TouchableOpacity key={index} style={[styles.card, typeof deck.questions[index].correct !== 'undefined' && ( deck.questions[index].correct ? styles.rightBorder : styles.wrongBorder ), styles.cardBlack]} onPress={() => this.flipHandler(index)}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontSize: 24 }}>{deck.questions[index].question}</Text>
+                    <View style={{ height: 40, flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
+                      <Icon
+                        name='sync'
+                        type='material'
+                        color='white'
+                        size={24}
+                      />
+                    </View>
+                    <Text style={{ flex: 1, color: '#fff', textAlign: 'center', fontSize: 24 }}>{deck.questions[index].question}</Text>
                   </TouchableOpacity>
                 ) : (
                   <React.Fragment>
@@ -116,6 +124,14 @@ export default class Question extends React.Component {
                       {typeof deck.questions[index].correct !== 'undefined' && (
                         <View style={deck.questions[index].correct ? styles.right : styles.wrong}><Text style={{ color: 'white' }}>{deck.questions[index].correct ? 'Correct!' : 'Wrong!'}</Text></View>
                       )}
+                      <View style={{ height: 40, flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
+                        <Icon
+                          name='sync'
+                          type='material'
+                          color='#24292e'
+                          size={24}
+                        />
+                      </View>
                       <View style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', paddingLeft: 10, flex: 1 }}>
                         <Text style={{ color: '#24292e', fontSize: 24 }}>{deck.questions[index].answer}</Text>
                       </View>
