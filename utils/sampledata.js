@@ -148,3 +148,12 @@ export function _answerQuestion(deck){
 export function answerQuestion(deck){
   return _answerQuestion(deck)
 }
+
+export function resetDeck(deck){
+  console.log('SAMPLEDATA: ', deck)
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res(deck.questions.map(question => question.correct = null))
+    })
+  }, 1000)
+}

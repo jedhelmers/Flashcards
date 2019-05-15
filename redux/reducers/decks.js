@@ -1,4 +1,4 @@
-import { GET_DECKS, ADD_DECK, ADD_CARD, ANSWER_QUESTION } from '../actions/decks'
+import { GET_DECKS, ADD_DECK, ADD_CARD, ANSWER_QUESTION, RESET_DECK } from '../actions/decks'
 
 export default function decks(state = [], action){
   switch(action.type){
@@ -18,6 +18,12 @@ export default function decks(state = [], action){
         ...action.deck
       }
     case ANSWER_QUESTION:
+      return {
+        ...state,
+        ...action.deck
+      }
+    case RESET_DECK:
+      console.log('RESET_DECK: ', action.deck)
       return {
         ...state,
         ...action.deck
