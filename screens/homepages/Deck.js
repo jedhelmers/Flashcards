@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Button } from 'react-native';
 import LottieView from 'lottie-react-native'
 import { Icon } from 'react-native-elements'
+import { resetDeckHandler } from '../../redux/actions/shared'
 
 export default class Deck extends React.Component {
   static navigationOptions = {
@@ -63,13 +64,23 @@ export default class Deck extends React.Component {
               </TouchableOpacity>
 
               <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-                <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+                <TouchableOpacity style={[{ flexDirection: 'column', justifyContent: 'center', width: 130, height: 34, margin: 20 }]}  onPress={() => resetDeckHandler(deck)}>
+                  <Icon
+                    name='delete'
+                    type='material'
+                    color='#cc0000'
+                    size={24}
+                  />
+                <Text style={{ color: '#cc0000', textAlign: 'center' }}>Reset Deck</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[{ flexDirection: 'column', justifyContent: 'center', width: 130, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home', deck)}>
                   <Icon
                     name='home'
                     type='material'
                     color='#24292e'
                     size={24}
                   />
+                <Text style={{ color: '#24292e', textAlign: 'center' }}>Home</Text>
                 </TouchableOpacity>
               </View>
             </View>

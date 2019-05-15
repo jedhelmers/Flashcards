@@ -5,6 +5,7 @@ export const ADD_DECK = 'ADD_DECK'
 export const ADD_CARD = 'ADD_CARD'
 export const ANSWER_QUESTION = 'ANSWER_QUESTION'
 export const ADD_SCORE = 'ANSWER_QUESTION'
+export const RESET_DECK = 'RESET_DECK'
 
 export function getDecks(decks){
   return {
@@ -39,6 +40,15 @@ export function getScoreAction(deck){
 
   return {
     type: ADD_SCORE,
+    deck
+  }
+}
+
+export function resetDeckAction(deck){
+  console.log('ACTIONS: ', deck)
+  deck.questions.map(question => question.correct = undefined)
+  return {
+    type: RESET_DECK,
     deck
   }
 }
