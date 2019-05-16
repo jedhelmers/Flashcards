@@ -1,8 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Button } from 'react-native';
 import LottieView from 'lottie-react-native'
-import { answerQuestionHandler } from '../../redux/actions/shared'
-import { getScoreHandler } from '../../redux/actions/shared'
+import { answerQuestionHandler, resetDeckHandler, getScoreHandler } from '../../redux/actions/shared'
 import { Icon } from 'react-native-elements'
 
 export default class Question extends React.Component {
@@ -10,11 +9,14 @@ export default class Question extends React.Component {
     super(props)
     this.state = {
       cardFlipped: [],
-      index: 0
+      index: 0,
+      right: 0,
+      wrong: 0
     }
 
     this.flipHandler = this.flipHandler.bind(this)
     this.indexHandler = this.indexHandler.bind(this)
+    this.resetHandler = this.resetHandler.bind(this)
   }
 
   flipHandler(index){
@@ -43,11 +45,26 @@ export default class Question extends React.Component {
   actionHandler(deck, index, correct){
     // deck.questions[index] = deck.questions[index].push({ correct: correct })
     // console.log('QUESTION: ', )
+    if(correct){
+      this.setState({
+        right: this.state.right + 1
+      })
+    } else {
+      this.setState({
+        wrong: this.state.wrong + 1
+      })
+    }
+
     answerQuestionHandler(Object.assign(deck.questions[index], { correct: correct }))
     // getScoreHandler('React', true)
     this.flipHandler(index)
     this.flipHandler(index)
     // this.props.pageHandler('home', deck)
+  }
+
+  resetHandler(deck){
+    resetDeckHandler(deck)
+    this.props.pageHandler('deck', deck)
   }
 
   async componentDidMount(){
@@ -63,7 +80,8 @@ export default class Question extends React.Component {
 
   render() {
     let { deck } = this.props
-    let { cardFlipped, index } = this.state
+    let { cardFlipped, index, right, wrong } = this.state
+    let questionCnt = deck.questions.length
     // console.log('QUESTION: ', cardFlipped)
 
     return (
@@ -91,7 +109,7 @@ export default class Question extends React.Component {
               </View>
             </View>
 
-            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]}  onPress={() => this.props.pageHandler('home')}>
+            <TouchableOpacity style={[{ justifyContent: 'center', width: 30, height: 34, margin: 20 }]} onPress={() => this.props.pageHandler('home', deck)}>
               <Icon
                 name='home'
                 type='material'
@@ -103,6 +121,7 @@ export default class Question extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
+            <Text style={{ color: '#999999', textAlign: 'right' }}>{`Question ${index + 1} | ${questionCnt}`}</Text>
             {
               typeof cardFlipped[index] !== 'undefined' ? (
                 !cardFlipped[index] ? (
@@ -154,6 +173,7 @@ export default class Question extends React.Component {
                     <TouchableOpacity onPress={() => this.indexHandler()}>
                       <Text>{index === deck.questions.length - 1 ? 'Results' : 'Next'}</Text>
                     </TouchableOpacity>
+
                   </React.Fragment>
                 )
               ) : (
@@ -170,15 +190,32 @@ export default class Question extends React.Component {
                         </View>
 
                         </View>
+
                       </TouchableOpacity>
                   ))}
+
+                  <TouchableOpacity style={[{ flexDirection: 'column', justifyContent: 'center', width: 130, height: 34, margin: 20 }]}  onPress={() => this.resetHandler(deck)}>
+                    <Icon
+                      name='home'
+                      type='material'
+                      color='#24292e'
+                      size={24}
+                    />
+                  <Text style={{ color: '#24292e', textAlign: 'center' }}>Retake</Text>
+                  </TouchableOpacity>
+
                 </React.Fragment>
               )
           }
 
           </View>
 
-
+          { right > 0 && (
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Text style={{ color: '#999999', fontWeight: '700' }}>{`Correct: `}</Text>
+              <Text style={{ color: '#999999', textAlign: 'right' }}>{`${((right/questionCnt) * 100)}%`}</Text>
+            </View>
+          )}
 
         </ScrollView>
       </View>
