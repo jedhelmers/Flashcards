@@ -13,6 +13,8 @@ import Question from './homepages/Question'
 import Deck from './homepages/Deck'
 import AddQuestion from './homepages/AddQuestion'
 import Home from './homepages/Home'
+import { setLocalNotification, clearLocalNotification, createNotification } from '../utils/helpers'
+
 
 class HomeScreen extends React.Component {
   constructor(props){
@@ -34,6 +36,8 @@ class HomeScreen extends React.Component {
       page: page,
       deck: deck
     })
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
 
   async componentDidMount(){
