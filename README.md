@@ -23,3 +23,6 @@ The project can be run with
 The project can be viewed in the browser at
 
 - [http://localhost:3000](http://localhost:3000)
+
+## Testing
+Flashcards has been tested on iOS and Android

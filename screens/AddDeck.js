@@ -19,10 +19,16 @@ class AddDeck extends React.Component {
   };
 
   actionHandler(){
-    this.props.addDeckActionHandler({ key: this.textCleaner(this.state.text), title: this.state.text})
+    let key = this.textCleaner(this.state.text)
+
     // this.props.pageHandler('home')
-    this.props.navigation.navigate('Decks')
-    console.log('ADDDECK: ')
+    // this.props.navigation.navigate('Decks')
+    this.props.navigation.navigate('Home', {
+      deck: key,
+    })
+    console.log('ADDDECK: ', this.props.navigation)
+    this.props.addDeckActionHandler({ key: key, title: this.state.text})
+    this.changeHandler('')
   }
 
   changeHandler(txt){
@@ -160,6 +166,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(){
+
   return {
     title: 'butts',
     key: 'keyButt'

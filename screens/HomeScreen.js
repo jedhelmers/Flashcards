@@ -37,6 +37,7 @@ class HomeScreen extends React.Component {
   }
 
   async componentDidMount(){
+
     this.setState({
       page: 'home',
       deck: {}
@@ -48,20 +49,26 @@ class HomeScreen extends React.Component {
     // console.log('HOMESCREEN 2: ', prevState )
     // console.log('HOMESCREEN 3: ', snapshot )
 
-    if(prevState.page !== this.state.page){
-      // this.setState({
-      //   page: 'home'
-      // })
-      // console.log("HOMESCREEN 4: ", this.props.navigation.actions.setParams({ page: 'home' }))
+    let { navigation, decks } = this.props
+    let itemId = navigation.getParam('deck', 'NO-DECK');
+
+    if(typeof decks[itemId] !== 'undefined' && itemId !== 'NO-DECK' && decks[itemId] !== this.state.deck ){
+      // this.pageHandler('deck', decks[itemId])
+      this.setState({
+        page: 'deck',
+        deck: decks[itemId]
+      })
     }
 
+    // console.log('HOMESCREEN: ', itemId)
   }
 
   render() {
-    let { decks } = this.props
+    let { decks, navigation } = this.props
     let { page, deck } = this.state
+    let itemId = navigation.getParam('deck', 'NO-DECK');
 
-    // console.log('PROPS: ', this.props.navigation.state.routeName)
+    console.log('PROPS: ', decks[itemId])
 
     return (
       <React.Fragment>

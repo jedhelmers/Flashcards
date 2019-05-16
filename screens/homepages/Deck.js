@@ -20,6 +20,7 @@ export default class Deck extends React.Component {
 
   render() {
     let { deck } = this.props
+    console.log('DECK.JS: ', deck)
 
     // let correctCnt = deck.questions.reduce((a, c) => a + c.correct, 0)
 
